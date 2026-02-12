@@ -43,7 +43,7 @@ class UserViewModel @Inject constructor(
                     is UserIntent.FetchDataUsers -> fetchDataUsers()
                     is UserIntent.RemoveUser -> {/* Logic xóa */}
                     is UserIntent.ClickUser -> {
-                        _effect.send(UserEffect.NavigateToDetail)
+                        _effect.send(UserEffect.NavigateToDetail(intent.user))
                     }
                 }
 
