@@ -10,6 +10,6 @@ data class UserState(
 // 2. ViewIntent: Cac hanh dong ma nguoi dung co the thuc hien
 sealed class UserIntent{
     object FetchDataUsers: UserIntent()
-    object ClickUser: UserIntent()
+    data class ClickUser(val user: User): UserIntent()
     data class RemoveUser(val name: String) : UserIntent()
 }
