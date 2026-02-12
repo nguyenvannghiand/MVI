@@ -4,6 +4,8 @@ package com.example.myapplication.model
 data class UserState(
     val isLoading: Boolean = false,
     val listUsers: List<User> = emptyList(),
+    val isDetailVisible: Boolean = false,
+    val selectedUser: User? = null,
     val error: String? = null
 )
 
@@ -12,4 +14,5 @@ sealed class UserIntent{
     object FetchDataUsers: UserIntent()
     data class ClickUser(val user: User): UserIntent()
     data class RemoveUser(val name: String) : UserIntent()
+    object CloseDetail: UserIntent()
 }

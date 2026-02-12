@@ -43,7 +43,12 @@ class UserViewModel @Inject constructor(
                     is UserIntent.FetchDataUsers -> fetchDataUsers()
                     is UserIntent.RemoveUser -> {/* Logic xóa */}
                     is UserIntent.ClickUser -> {
-                        _effect.send(UserEffect.NavigateToDetail(intent.user))
+                        _state.update { it.copy(isDetailVisible = true, selectedUser = intent.user) }
+                        // Vẫn có thể gửi Effect nếu bạn muốn làm thêm việc khác (như Analytics)
+                    }
+
+                    is UserIntent.CloseDetail -> {
+                        _state.update { it.copy(isDetailVisible = false, selectedUser = null) }
                     }
                 }
 

@@ -65,12 +65,7 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(this@MainActivity, effect.message, Toast.LENGTH_SHORT)
                                 .show()
                         }
-                        is UserEffect.NavigateToDetail -> {
-                            // Logic chuyển màn hình
-                            openUserDetail(effect.user)
-                        }
                     }
-
                 }
         }
     }
@@ -89,7 +84,9 @@ class MainActivity : AppCompatActivity() {
         onBackPressedDispatcher.addCallback(this){
             if (supportFragmentManager.backStackEntryCount > 0) {
                 supportFragmentManager.popBackStack()
-                binding.fragmentContainer.isVisible = false
+                lifecycleScope.launch {
+                    viewModel.userIntent.send(UserIntent.CloseDetail)
+                }
             } else {
                 finish()
             }
@@ -98,20 +95,27 @@ class MainActivity : AppCompatActivity() {
 
 
     private fun render(state: UserState){
+        binding.fragmentContainer.isVisible = state.isDetailVisible
+        binding.infoUser.isVisible = !state.isDetailVisible
+        if (state.isDetailVisible && state.selectedUser != null) {
+            // Chỉ thực hiện transaction nếu Fragment chưa tồn tại hoặc khác User
+            showFragmentDetail(state.selectedUser)
+        }
         state.error?.let {
             Toast.makeText(this, it, Toast.LENGTH_SHORT).show()
         }
         android.util.Log.d("MVI_DEBUG", "Users: ${state.listUsers.size}")
     }
 
-    private fun openUserDetail(user: User) {
-        android.util.Log.d("MVI_DEBUG", "openUserDetail Users: ${user}")
-        binding.fragmentContainer.isVisible = true
-        val fragment = UserDetailFragment.newInstance(user)
-
-        supportFragmentManager.beginTransaction()
-            .replace(R.id.fragmentContainer, fragment)
-            .addToBackStack(null)
-            .commit()
+    private fun showFragmentDetail(user: User) {
+        // Kiểm tra để tránh add đè nhiều Fragment giống nhau khi render chạy lại
+        val currentFrag = supportFragmentManager.findFragmentByTag("UserDetail")
+        if (currentFrag == null) {
+            val fragment = UserDetailFragment.newInstance(user)
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.fragmentContainer, fragment, "UserDetail")
+                .addToBackStack(null)
+                .commit()
+        }
     }
 }
