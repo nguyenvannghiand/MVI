@@ -65,6 +65,10 @@ class MainActivity : AppCompatActivity() {
                             Toast.makeText(this@MainActivity, effect.message, Toast.LENGTH_SHORT)
                                 .show()
                         }
+
+                        is UserEffect.TrackEvent -> {
+                            android.util.Log.d("MVI_DEBUG", "Tracking: ${effect.eventName}")
+                        }
                     }
                 }
         }

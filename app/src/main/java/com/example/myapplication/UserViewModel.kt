@@ -45,6 +45,10 @@ class UserViewModel @Inject constructor(
                     is UserIntent.ClickUser -> {
                         _state.update { it.copy(isDetailVisible = true, selectedUser = intent.user) }
                         // Vẫn có thể gửi Effect nếu bạn muốn làm thêm việc khác (như Analytics)
+                        _effect.send(UserEffect.TrackEvent(
+                            eventName = "click_info_user",
+                            params = mapOf("user_id" to intent.user.id.toString())
+                        ))
                     }
 
                     is UserIntent.CloseDetail -> {
