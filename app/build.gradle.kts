@@ -81,6 +81,8 @@ dependencies {
 // flowWithLifecycle & repeatOnLifecycle
     implementation("androidx.lifecycle:lifecycle-runtime-compose:$lifecycle_version")
 
+	implementation("androidx.fragment:fragment-ktx:1.8.5")
+
     // Coil (Dùng Coroutines ngầm, cực nhẹ)
     implementation("io.coil-kt:coil:2.6.0")
 
