@@ -86,4 +86,7 @@ dependencies {
 
 // LeakCanary (Kiểm tra Memory Leak - Chỉ dùng cho debug)
     debugImplementation("com.squareup.leakcanary:leakcanary-android:2.14")
+
+	// need View binding
+	implementation("com.github.kirich1409:viewbindingpropertydelegate-noreflection:1.5.9")
 }

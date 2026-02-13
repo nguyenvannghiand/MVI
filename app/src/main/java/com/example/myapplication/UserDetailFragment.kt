@@ -5,14 +5,14 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import by.kirich1409.viewbindingdelegate.viewBinding
 import com.example.myapplication.databinding.FragmentUserDetailBinding
 import com.example.myapplication.model.User
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class UserDetailFragment: Fragment(R.layout.fragment_user_detail) {
-    private var _binding: FragmentUserDetailBinding? = null
-    private val binding get() = _binding!! // Getter an toàn
+    private val binding by viewBinding(FragmentUserDetailBinding::bind)
 
     companion object {
         private const val ARG_USER = "arg_user"
@@ -22,15 +22,6 @@ class UserDetailFragment: Fragment(R.layout.fragment_user_detail) {
                 putParcelable(ARG_USER, user)
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        _binding = FragmentUserDetailBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
