@@ -11,7 +11,6 @@ interface AnalyticsManager {
 class AnalyticsManagerImpl @Inject constructor(): AnalyticsManager {
 	override fun track(event: AnalyticsEvent) {
 		// Thực hiện logic tracking
-		println("Log: ${event.name} with params: ${event.params}")
 		when(event){
 			is AnalyticsEvent.Download -> {
 				println("Log: ${event.name} with params: ${event.params}")
