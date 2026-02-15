@@ -20,7 +20,7 @@ class UserViewModel @Inject constructor(
 			is UserIntent.FetchDataUsers -> fetchDataUsers()
 			is UserIntent.ClickUser -> {
 				setState { copy(isDetailVisible = true, selectedUser = intent.user) }
-				setEffect { UserEffect.TrackEvent("click_user", mapOf("id" to intent.user.id.toString())) }
+				setEffect { UserEffect.TrackEvent(AnalyticsEvent.Play(itemId = intent.user.id.toString())) }
 			}
 			is UserIntent.CloseDetail -> {
 				setState { copy(isDetailVisible = false, selectedUser = null) }

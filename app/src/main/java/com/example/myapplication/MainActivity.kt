@@ -1,29 +1,23 @@
 package com.example.myapplication
 
-import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.addCallback
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.isVisible
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.flowWithLifecycle
 import androidx.lifecycle.lifecycleScope
-import androidx.lifecycle.repeatOnLifecycle
 import com.example.myapplication.databinding.ActivityMainBinding
 import com.example.myapplication.model.User
-import com.example.myapplication.UserIntent
-import com.example.myapplication.UserState
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : BaseActivity<ActivityMainBinding, UserState, UserIntent, UserEffect, UserViewModel>(
 	{ layoutInflater -> ActivityMainBinding.inflate(layoutInflater) }
 ) {
+
+	@Inject
+	lateinit var analyticsManager: AnalyticsManager
 
 	override val viewModel: UserViewModel by viewModels()
 
@@ -46,7 +40,9 @@ class MainActivity : BaseActivity<ActivityMainBinding, UserState, UserIntent, Us
 	override fun handleEffect(effect: UserEffect) {
 		when (effect) {
 			is UserEffect.ShowToast -> Toast.makeText(this, effect.message, Toast.LENGTH_SHORT).show()
-			is UserEffect.TrackEvent -> {}
+			is UserEffect.TrackEvent -> {
+				analyticsManager.track(event = effect.event)
+			}
 		}
 	}
 
